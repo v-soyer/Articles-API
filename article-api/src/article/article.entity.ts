@@ -13,5 +13,8 @@ export class Article {
   content: string;
 
   @Column()
-  postedAt: string;
+  updatedAt: Date = new Date();
+
+  @Column()
+  postedAt: Date = new Date();
 }
