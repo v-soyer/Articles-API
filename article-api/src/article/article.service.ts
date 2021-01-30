@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Article } from './article.entity';
@@ -50,6 +50,10 @@ export class ArticleService {
             throw new NotFoundException(`No article found with the id: ${id}`);
         }
 
+        if (article.author != user.username) {
+            throw new ForbiddenException("You doesn't have the right to upadate this article");
+        }
+
         return this.articleRepository.save({
             _id: article._id,
             title: title,
@@ -66,6 +70,10 @@ export class ArticleService {
 
         if (!article) {
             throw new NotFoundException(`No article found with the id: ${String(id)}`);
+        }
+
+        if (article.author != user.username) {
+            throw new ForbiddenException("You doesn't have the right to delete this article");
         }
         
         await this.articleRepository.delete(article);
