@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "./user.entity";
 import { LoginDto } from "../auth/dto/login.dto";
-import { BadRequestException, InternalServerErrorException, Logger } from "@nestjs/common";
+import { BadRequestException, ConflictException, InternalServerErrorException, Logger } from "@nestjs/common";
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from "../auth/dto/register.dto";
 
@@ -15,7 +15,6 @@ export class UserRepository extends Repository<User> {
 
         if (password != passwordReapeat) {
             throw new BadRequestException("Passwords don't match");
-            
         }
 
         const user = new User();
@@ -26,6 +25,10 @@ export class UserRepository extends Repository<User> {
             await user.save();
             return user;
         } catch (error) {
+            //11000 = duplicate
+            if (error.code === 11000) {
+                throw new ConflictException("This username already exist");
+            }
             this.logger.error(`Error during user's registration: ${error}`);
             throw new InternalServerErrorException();
         }
