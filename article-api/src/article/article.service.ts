@@ -15,9 +15,11 @@ export class ArticleService {
 
     async createArticle(articleCreateDto:ArticleCreateDto, user:User):Promise<Article> {
         const { title, content } = articleCreateDto;
+        const author = user.username
         const article = this.articleRepository.create({
             title,
             content,
+            author
         });
         return this.articleRepository.save(article);
     }
