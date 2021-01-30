@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "./user.entity";
 import { LoginDto } from "../auth/dto/login.dto";
-import { InternalServerErrorException, Logger } from "@nestjs/common";
+import { BadRequestException, InternalServerErrorException, Logger } from "@nestjs/common";
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from "../auth/dto/register.dto";
 
@@ -11,7 +11,12 @@ export class UserRepository extends Repository<User> {
     private logger = new Logger('UserRepository');
 
     async signUp(registerDto: RegisterDto): Promise<User> {
-        const { username, password } = registerDto;
+        const { username, password, passwordReapeat } = registerDto;
+
+        if (password != passwordReapeat) {
+            throw new BadRequestException("Passwords don't match");
+            
+        }
 
         const user = new User();
         Object.assign(user, registerDto);
