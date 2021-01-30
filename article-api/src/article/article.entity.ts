@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
-import { Entity, PrimaryColumn, Column, ObjectIdColumn, ObjectID as ObjectIDType, ObjectID} from 'typeorm';
+import { User } from 'src/user/user.entity';
+import { Entity, PrimaryColumn, Column, ObjectIdColumn, ObjectID as ObjectIDType, ObjectID, ManyToOne} from 'typeorm';
 
 @Entity()
 export class Article {
@@ -17,4 +18,7 @@ export class Article {
 
   @Column()
   postedAt: Date = new Date();
+
+  @Column()
+  author: string
 }

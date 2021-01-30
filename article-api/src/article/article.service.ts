@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, ObjectID, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Article } from './article.entity';
 import { ArticleCreateDto } from './dto/create-article.dto';
 import { ObjectId } from 'mongodb';
 import { ArticleUpdateDto } from './dto/update-article.dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class ArticleService {
@@ -12,7 +13,7 @@ export class ArticleService {
         @InjectRepository(Article) private articleRepository: Repository<Article>,
     ) {}
 
-    async createArticle(articleCreateDto:ArticleCreateDto):Promise<Article> {
+    async createArticle(articleCreateDto:ArticleCreateDto, user:User):Promise<Article> {
         const { title, content } = articleCreateDto;
         const article = this.articleRepository.create({
             title,
@@ -37,7 +38,7 @@ export class ArticleService {
         return article;
     }
 
-    async updateArticleContent(articleUpdateDto:ArticleUpdateDto, id:ObjectId):Promise<Article> {
+    async updateArticleContent(articleUpdateDto:ArticleUpdateDto, id:ObjectId, user:User):Promise<Article> {
         const { title, content } = articleUpdateDto;
         const article = await this.articleRepository.findOne({
             where: {_id: id}
@@ -56,7 +57,7 @@ export class ArticleService {
         });
     }
 
-    async deleteArticle(id:ObjectId):Promise<Article> {
+    async deleteArticle(id:ObjectId, user:User):Promise<Article> {
         const article = await this.articleRepository.findOne({
             where: {_id: id}
         });

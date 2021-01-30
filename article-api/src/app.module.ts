@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
-import { ArticleController } from './article/article.controller';
 import { Article } from './article/article.entity';
 import { ArticleModule } from './article/article.module';
+import { AuthModule } from './auth/auth.module';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -12,10 +13,12 @@ import { ArticleModule } from './article/article.module';
     url: 'mongodb://localhost/',
     synchronize: true,
     useUnifiedTopology: true,
-    entities: [Article],
+    entities: [Article, User],
     logging: true
    }),
     ArticleModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
