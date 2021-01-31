@@ -25,13 +25,13 @@ export class ArticleController {
 
     @Get('/search')
     getArticleByTag(
-        @Query() query
+        @Query('tags') tags
     ):Promise<Article[]> {
-        if (!query.tags) {
+        if (!tags) {
             throw new BadRequestException('Missing \'tags\' query parameter');
         }
 
-        return this.articleService.getArticleByTag(query.tags);
+        return this.articleService.getArticleByTag(tags);
     }
 
     @Get('/:id')
