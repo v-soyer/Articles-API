@@ -1,6 +1,4 @@
-import { ObjectId } from 'mongodb';
-import { User } from 'src/user/user.entity';
-import { Entity, PrimaryColumn, Column, ObjectIdColumn, ObjectID as ObjectIDType, ObjectID, ManyToOne} from 'typeorm';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 export class Article {
@@ -12,6 +10,9 @@ export class Article {
 
   @Column()
   content: string;
+
+  @Column()
+  tags: string[];
 
   @Column()
   updatedAt: Date = new Date();

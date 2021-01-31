@@ -1,7 +1,7 @@
 import { BaseEntity, Entity, Column, Unique, OneToMany, ObjectIdColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
-import { ApiProperty, ApiHideProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 @Unique(['username'])

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseArrayPipe, ParseUUIDPipe, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, ParseArrayPipe, ParseUUIDPipe, Post, Put, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBadRequestResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongodb';
@@ -23,6 +23,15 @@ export class ArticleController {
         return this.articleService.getAllArticles();
     }
 
+    @Get('/search')
+    getArticleByTag(@Query() query):Promise<Article[]> {
+        if (!query.tags) {
+            throw new BadRequestException('Missing \'tags\' query parameter');
+        }
+
+        return this.articleService.getArticleByTag(query.tags);
+    }
+
     @Get('/:id')
     getArticleById(@Param('id', ParseObjectIdPipe) id: ObjectId):Promise<Article> {
         return this.articleService.getArticleById(id);
@@ -34,7 +43,6 @@ export class ArticleController {
         @Body(ValidationPipe)articleCreateDto:ArticleCreateDto,
         @GetUser() user:User
     ):Promise<Article> {
-        console.log(user);
         return this.articleService.createArticle(articleCreateDto, user);
     }
 
@@ -45,7 +53,6 @@ export class ArticleController {
         @Param('id', ParseObjectIdPipe) id: ObjectId,
         @GetUser() user:User
     ):Promise<Article>{
-        console.log(user);
         return this.articleService.updateArticleContent(articleUpdateDto, id, user);
     }
 
@@ -55,7 +62,6 @@ export class ArticleController {
         @Param('id', ParseObjectIdPipe) id: ObjectId,
         @GetUser() user:User
     ):Promise<Article> {
-        console.log(user);
         return this.articleService.deleteArticle(id, user);
     }
 }

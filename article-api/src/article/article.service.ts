@@ -14,12 +14,13 @@ export class ArticleService {
     ) {}
 
     async createArticle(articleCreateDto:ArticleCreateDto, user:User):Promise<Article> {
-        const { title, content } = articleCreateDto;
+        const { title, content, tags } = articleCreateDto;
         const author = user.username
         const article = this.articleRepository.create({
             title,
             content,
-            author
+            author,
+            tags
         });
         return this.articleRepository.save(article);
     }
@@ -38,6 +39,12 @@ export class ArticleService {
         }
 
         return article;
+    }
+
+    async getArticleByTag(tags: String):Promise<Article[]> {
+        return this.articleRepository.find({
+            where: {tags: tags}
+        })
     }
 
     async updateArticleContent(articleUpdateDto:ArticleUpdateDto, id:ObjectId, user:User):Promise<Article> {
