@@ -6,7 +6,6 @@ import { ArticleCreateDto } from './dto/create-article.dto';
 import { ObjectId } from 'mongodb';
 import { ArticleUpdateDto } from './dto/update-article.dto';
 import { User } from 'src/user/user.entity';
-import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
 export class ArticleService {
@@ -58,7 +57,7 @@ export class ArticleService {
             throw new NotFoundException(`No article found with the id: ${id}`);
         }
 
-        if (article.author != user.username) {
+        if (article.author !== user.username) {
             throw new ForbiddenException("You doesn't have the right to upadate this article");
         }
 
@@ -66,9 +65,7 @@ export class ArticleService {
             _id: article._id,
             title: title,
             content: content,
-            tags: tags,
-            updatedAt: new Date(),
-            postedAt: article.postedAt,
+            tags: tags
         });
     }
 
@@ -81,7 +78,7 @@ export class ArticleService {
             throw new NotFoundException(`No article found with the id: ${String(id)}`);
         }
 
-        if (article.author != user.username) {
+        if (article.author !== user.username) {
             throw new ForbiddenException("You doesn't have the right to delete this article");
         }
         

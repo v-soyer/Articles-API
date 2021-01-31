@@ -1,4 +1,4 @@
-import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Article {
@@ -14,11 +14,11 @@ export class Article {
   @Column()
   tags: string[];
 
-  @Column()
-  updatedAt: Date = new Date();
+  @CreateDateColumn({type: "timestamp"})
+  createdAt: Date;
 
-  @Column()
-  postedAt: Date = new Date();
+  @UpdateDateColumn({type: "timestamp"})
+  updatedAt: Date;
 
   @Column()
   author: string
