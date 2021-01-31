@@ -6,6 +6,7 @@ import { ArticleCreateDto } from './dto/create-article.dto';
 import { ObjectId } from 'mongodb';
 import { ArticleUpdateDto } from './dto/update-article.dto';
 import { User } from 'src/user/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
 export class ArticleService {
@@ -48,7 +49,7 @@ export class ArticleService {
     }
 
     async updateArticleContent(articleUpdateDto:ArticleUpdateDto, id:ObjectId, user:User):Promise<Article> {
-        const { title, content } = articleUpdateDto;
+        const { title, content, tags } = articleUpdateDto;
         const article = await this.articleRepository.findOne({
             where: {_id: id}
         });
@@ -65,6 +66,7 @@ export class ArticleService {
             _id: article._id,
             title: title,
             content: content,
+            tags: tags,
             updatedAt: new Date(),
             postedAt: article.postedAt,
         });

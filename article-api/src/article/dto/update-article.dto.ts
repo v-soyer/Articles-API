@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsArray } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ArticleUpdateDto {
@@ -11,4 +11,8 @@ export class ArticleUpdateDto {
         @IsString()
         @IsNotEmpty()
         content: string;
+
+        @ApiProperty()
+        @IsArray()
+        tags: Array<string>;
 }
