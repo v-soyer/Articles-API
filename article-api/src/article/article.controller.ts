@@ -24,7 +24,9 @@ export class ArticleController {
     }
 
     @Get('/search')
-    getArticleByTag(@Query() query):Promise<Article[]> {
+    getArticleByTag(
+        @Query() query
+    ):Promise<Article[]> {
         if (!query.tags) {
             throw new BadRequestException('Missing \'tags\' query parameter');
         }
@@ -33,7 +35,9 @@ export class ArticleController {
     }
 
     @Get('/:id')
-    getArticleById(@Param('id', ParseObjectIdPipe) id: ObjectId):Promise<Article> {
+    getArticleById(
+        @Param('id', ParseObjectIdPipe) id: ObjectId
+    ):Promise<Article> {
         return this.articleService.getArticleById(id);
     }
 
